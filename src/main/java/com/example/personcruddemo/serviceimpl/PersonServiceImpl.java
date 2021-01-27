@@ -36,6 +36,7 @@ public class PersonServiceImpl implements PersonService {
 	/**
 	 * Method used to save person details
 	 */
+	
 	public Optional<Person> savePerson(Person person) {
 		// TODO Auto-generated method stub
 		logger.info("Flow started inside method savePerson...");
@@ -74,17 +75,20 @@ public class PersonServiceImpl implements PersonService {
 	 * Method is used to save the person address as a person can have more then one
 	 * address.
 	 */
-	public Optional<Address> savePersonAddress(Address address) {
+	@Transactional
+	public boolean savePersonAddress(Person person) {
 		// TODO Auto-generated method stub
 		logger.info("Flow started inside method addPersonAddress...");
+		boolean isSaved=true;
 		try {
-			address = addressRepository.save(address);
-		} catch (Exception e) {
+			personRepository.save(person);
+			} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("Error occured during save person address inside method savePersonAddress..."
 					+ "Error Message:" + e.getMessage());
+			isSaved=false;
 		}
-		return Optional.of(address);
+		return isSaved;
 	}
 
 	@Override

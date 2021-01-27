@@ -1,6 +1,7 @@
 package com.example.personcruddemo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,6 +20,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,34 +44,38 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Entity
 @Table(name = "person")
+//@JsonInclude(value = Include.NON_EMPTY)
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "person_id")
-	private int personid;
+	private int personId;
 	@NotEmpty(message = "First name is required")
-	@Column(nullable = false, name = "firstname")
+	@Column(name = "person_firstname",nullable = false)
 	private String firstname;
 	@NotEmpty(message = "Last name is required")
-	@Column(nullable = false, name = "lastname")
+	@Column(name = "person_lastname",nullable = false)
 	private String lastname;
 	@NotEmpty(message = "DOB is required")
-	@Column(nullable = false, name = "pers_dob")
+	@Column(name = "person_dob",nullable = false)
 	@Past
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date dob;
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "person_id", referencedColumnName = "person_id")
+	//@OneToMany(mappedBy = "person",cascade = CascadeType.ALL,targetEntity = Address.class)
 	@NotEmpty(message = "Address is required")
 	
-	private List<Address> address;
-	public int getPersonid() {
-		return personid;
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="person",cascade = CascadeType.ALL)
+	private List<Address> address=new ArrayList<Address>();
+	
+	
+	public int getPersonId() {
+		return personId;
 	}
-	public void setPersonid(int personid) {
-		this.personid = personid;
+	public void setPersonId(int personId) {
+		this.personId = personId;
 	}
 	public String getFirstname() {
 		return firstname;

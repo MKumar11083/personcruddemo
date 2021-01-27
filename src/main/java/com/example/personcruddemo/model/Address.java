@@ -2,11 +2,17 @@ package com.example.personcruddemo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * @author Manoj Kumar This model is used to serve and persist person address, a
@@ -20,7 +26,7 @@ public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "address_id")
+	@Column(name = "id")
 	private Integer id;
 	@NotEmpty(message = "Address lineone is required")
 	@Column(nullable = false, name = "address_lineone")
@@ -34,8 +40,12 @@ public class Address {
 	@Column(name = "country", nullable = false)
 	private String country;
 
-	@Column(name = "person_id")
-	private Integer personId;
+	
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "person_id", nullable = false)
+	@JsonBackReference
+	private Person person;
 
 	public Integer getId() {
 		return id;
@@ -85,11 +95,15 @@ public class Address {
 		this.country = country;
 	}
 
-	public Integer getPersonId() {
-		return personId;
+	
+	public Person getPerson() {
+		return person;
 	}
 
-	public void setPersonId(Integer personId) {
-		this.personId = personId;
+	
+	public void setPerson(Person person) {
+		this.person = person;
 	}
+
+	
 }

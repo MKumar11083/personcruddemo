@@ -64,10 +64,21 @@ public class PersonController {
 		logger.info("Flow started inside createAddresss method inside controller PersonController!");
 		ServiceResponseEntity response = new ServiceResponseEntity();
 		try {
-			Optional<Address> addressData = personService.savePersonAddress(address);
-			if (addressData.isPresent()) {
-				response.setCode(Integer.valueOf(environment.getProperty("app.rest.service.created.code")));
-				response.setMessage(environment.getProperty("app.rest.service.address.created"));
+			Optional<Person> pers=personService.findPersonById(address.getPerson().getPersonId());
+			if(pers.isPresent()) {
+				pers.get().getAddress().add(address);
+				boolean isSaved = personService.savePersonAddress(pers.get());
+				if (isSaved) {
+					response.setCode(Integer.valueOf(environment.getProperty("app.rest.service.created.code")));
+					response.setMessage(environment.getProperty("app.rest.service.address.created"));
+				}else {
+					response.setCode(Integer.valueOf(environment.getProperty("app.rest.service.failed.code")));
+					response.setMessage(environment.getProperty("app.rest.service.failed"));
+				}
+			}else {
+				response.setCode(
+						Integer.valueOf(environment.getProperty("app.rest.service.failed.person.notexists.code")));
+				response.setMessage("Failed to add address,"+environment.getProperty("app.rest.service.failed.person.notexists"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

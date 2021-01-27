@@ -16,8 +16,8 @@ import com.example.personcruddemo.model.Person;
  */
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Integer> {
-	@Query(value = "select * from person  where firstname=?1 and lastname=?2",nativeQuery = true)
-	Optional<Person> findPersonByFirstAndLastName(String firstname,String Lastname);
-	@Query(value="select * from person where lastname=?1",nativeQuery = true)
+	@Query(value = "select * from person  where person_firstname=?1 and person_lastname=?2",nativeQuery = true)
+	Optional<Person> findPersonByFirstAndLastName(String firstname,String lastname);
+	@Query(value="select * from person where person_lastname=?1",nativeQuery = true)
 	Optional<List<Person>> findPersonByLastName(String lastname);
 }

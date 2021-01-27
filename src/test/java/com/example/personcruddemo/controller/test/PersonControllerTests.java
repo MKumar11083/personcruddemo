@@ -61,15 +61,25 @@ public class PersonControllerTests extends AbstractTest {
 	public void createAddress() throws Exception {
 		String uri = "/rest/createAddress";
 
-		Person person = new Person();
-		person.setPersonid(1);
-		Address address = new Address();
-		address.setAddresslineone("test");
-		address.setCity("Ghaziabad");
-		address.setPostalcode("201017");
-		address.setCountry("India");
-		address.setPersonId(1);
-		String inputJson = super.mapToJson(address);
+		/*
+		 * Person person = new Person(); person.setPersonid(1); Address address = new
+		 * Address(); address.setAddresslineone("test"); address.setCity("Ghaziabad");
+		 * address.setPostalcode("201017"); address.setCountry("India");
+		 * address.setPersonId(1);
+		 */
+		
+		String inputJson=" {\r\n"
+				+ "                    \"addresslineone\": \"C- KDP GRAND SAVANNA\",\r\n"
+				+ "                    \"addresslinetwo\": \"RAJ NAGAR EXTENSION\",\r\n"
+				+ "                    \"city\": \"Ghaziabad\",\r\n"
+				+ "                    \"postalcode\": \"201017\",\r\n"
+				+ "                    \"country\": \"India\",\r\n"
+				+ "                    \"person\": {\r\n"
+				+ "                        \"id\":1\r\n"
+				+ "                    }\r\n"
+				+ "                }";
+		
+		///String inputJson = super.mapToJson(address);
 		MvcResult mvcResult = mvc.perform(
 				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();

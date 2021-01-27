@@ -57,7 +57,7 @@ class PersonServiceImplTests {
 	@Test
 	public void deletePerson() {
 		Person person = new Person();
-		person.setPersonid(1);
+		person.setPersonId(1);
 		Mockito.when(personService.deletePerson(1)).thenReturn(true);
 		boolean isDeleted = personService.deletePerson(1);
 		Assert.assertEquals(true, isDeleted);
@@ -70,9 +70,18 @@ class PersonServiceImplTests {
 		address.setCity("Ghaziabad");
 		address.setPostalcode("201017");
 		address.setCountry("India");
-		Mockito.when(personService.savePersonAddress(address)).thenReturn(Optional.of(address));
-		Optional<Address> addres = personService.savePersonAddress(address);
-		Assert.assertEquals("test", addres.get().getAddresslineone());
+		
+		List<Address> addres = new ArrayList<Address>();
+		addres.add(address);
+		
+		Person person = new Person();
+		person.setFirstname("test");
+		person.setLastname("test");
+		person.setAddress(addres);
+		
+		Mockito.when(personService.savePersonAddress(person)).thenReturn(true);
+		Boolean isSaved = personService.savePersonAddress(person);
+		Assert.assertEquals(true, isSaved);
 	}
 
 	@Test

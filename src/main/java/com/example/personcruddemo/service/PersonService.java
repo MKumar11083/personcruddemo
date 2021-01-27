@@ -16,7 +16,7 @@ public interface PersonService {
 
 	public Optional<List<Person>> findListOfPersonsByLastName(String lastname);
 
-	public Optional<Address> savePersonAddress(Address address);
+	public boolean savePersonAddress(Person person);
 	
 	public Optional<Person> findPersonById(Integer personId);
 	
